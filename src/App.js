@@ -7,12 +7,40 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [dogImages, setDogImages] = useState([]);
 
+  async function getDogs() {
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("https://dog.ceo/api/breeds/list/all");
+      const dogsJson = await response.json();
+
+      const dogsList = Object.keys(dogsJson.message)
+      
+      setBreeds(dogsList);
+    } catch(err) {
+      console.log(err);
+    }
+  
+    setIsLoading(false);
+  }
+
   useEffect(() => {
-    // TODO
+    getDogs();
   }, []);
 
-  const searchByBreed = () => {
-    // TODO
+  const searchByBreed = async () => {
+    setIsLoading(true);
+
+    try{
+      const response = await fetch(`https://dog.ceo/api/breed/${selectedBreed}/images`);
+      const dogsImgsJson = await response.json();
+
+      setDogImages(dogsImgsJson.message);
+    } catch(err) {
+      console.log(err);
+    }
+
+    setIsLoading(false);
   };
 
   return (
