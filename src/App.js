@@ -28,8 +28,19 @@ function App() {
     getDogs();
   }, []);
 
-  const searchByBreed = () => {
-    // TODO
+  const searchByBreed = async () => {
+    setIsLoading(true);
+
+    try{
+      const response = await fetch(`https://dog.ceo/api/breed/${selectedBreed}/images`);
+      const dogsImgsJson = await response.json();
+
+      setDogImages(dogsImgsJson.message);
+    } catch(err) {
+      console.log(err);
+    }
+
+    setIsLoading(false);
   };
 
   return (
